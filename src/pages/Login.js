@@ -1,11 +1,11 @@
 import { Link, Redirect } from 'react-router-dom';
 import { Background } from '../styled-components/Background';
-import { StyledLogin } from '../styled-pages/Login';
 import Logo from '../assets/images/logo.png';
 import { Form } from '../styled-components/Form';
 import BgImage from '../assets/images/bg1.jpg';
 import { useRef, useState } from 'react';
 import { Spinner } from '../styled-components/Spinner';
+import { Page } from '../styled-pages/Page';
 
 export default function Login() {
   const [user, setUser] = useState({});
@@ -70,7 +70,7 @@ export default function Login() {
   if (loginStatus === 'success') return <Redirect to='/' />;
 
   return (
-    <StyledLogin>
+    <Page login>
       <Background login bg={BgImage} />
       <img src={Logo} alt='Zunny logo' />
       <Form onSubmit={handleSubmit} status={loginStatus} login>
@@ -98,6 +98,6 @@ export default function Login() {
           Não possuo cadastro. <Link to='/register'>Cadastrar.</Link>
         </p>
       </Form>
-    </StyledLogin>
+    </Page>
   );
 }

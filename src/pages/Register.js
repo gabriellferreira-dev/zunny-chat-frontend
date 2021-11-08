@@ -3,9 +3,9 @@ import { Link, Redirect } from 'react-router-dom';
 import { Background } from '../styled-components/Background';
 import Logo from '../assets/images/logo.png';
 import { Form } from '../styled-components/Form';
-import { StyledRegister } from '../styled-pages/Register';
 import BgImage from '../assets/images/bg2.jpg';
 import { Spinner } from '../styled-components/Spinner';
+import { Page } from '../styled-pages/Page';
 
 export default function Register() {
   const [user, setUser] = useState({});
@@ -106,7 +106,7 @@ export default function Register() {
   if (!redirectTime) return <Redirect to='/login' />;
 
   return (
-    <StyledRegister>
+    <Page>
       <Background register bg={BgImage} />
       <img src={Logo} alt='Zunny logo' />
       <Form
@@ -165,6 +165,6 @@ export default function Register() {
           Já possuo cadastro. <Link to='/login'>Login.</Link>
         </p>
       </Form>
-    </StyledRegister>
+    </Page>
   );
 }
