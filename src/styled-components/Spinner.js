@@ -7,8 +7,8 @@ const spin = keyframes`
 `;
 
 export const Spinner = styled.div`
-  width: 80%;
-  height: 80%;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   border: 4px solid rgba(0, 0, 0, 0.1);
   border-left-color: #46c3e6;

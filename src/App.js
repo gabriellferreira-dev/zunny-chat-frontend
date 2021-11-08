@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import React from 'react';
 import Login from './pages/Login';
 import { GlobalStyle } from './styles/globalStyle';
@@ -8,10 +8,10 @@ function App() {
   return (
     <>
       <GlobalStyle />
-      <Routes>
-        <Route path='/login' element={<Login />} />
-        <Route path='/register' element={<Register />} />
-      </Routes>
+      <Switch>
+        <Route path='/login' component={Login} />
+        <Route path='/register' component={Register} />
+      </Switch>
     </>
   );
 }
