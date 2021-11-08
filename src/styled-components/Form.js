@@ -25,6 +25,12 @@ export const Form = styled.form`
     transition: outline 0.1s ease;
     outline: none;
 
+    ${({ login }) =>
+      login &&
+      css`
+        background: rgba(0, 0, 0, 0.1);
+      `}
+
     &.error {
       outline-color: #e65d25;
       outline-style: solid;

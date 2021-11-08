@@ -107,7 +107,7 @@ export default function Register() {
 
   return (
     <StyledRegister>
-      <Background bg={BgImage} />
+      <Background register bg={BgImage} />
       <img src={Logo} alt='Zunny logo' />
       <Form
         ref={formRef}

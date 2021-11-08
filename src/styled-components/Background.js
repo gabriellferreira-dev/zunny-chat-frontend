@@ -4,8 +4,19 @@ export const Background = styled.div`
   width: 100%;
   height: 100%;
 
-  ${({ bg }) =>
-    bg &&
+  ${({ login, bg }) =>
+    login &&
+    css`
+      background: linear-gradient(
+          0deg,
+          rgba(70, 195, 230, 0.8),
+          rgba(70, 195, 230, 0.8)
+        ),
+        url(${bg});
+    `}
+
+  ${({ register, bg }) =>
+    register &&
     css`
       background: linear-gradient(
           0deg,
@@ -14,6 +25,7 @@ export const Background = styled.div`
         ),
         url(${bg});
     `}
+
   filter: blur(2px);
   background-size: cover;
   background-position: center;
