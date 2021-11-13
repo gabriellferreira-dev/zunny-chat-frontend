@@ -18,13 +18,6 @@ export default function SideBar() {
           placeholder='Bucar conversas, contatos ou grupos...'
         />
       </div>
-      <div>
-        <div>
-          <p>Usuários online</p>
-          <MdExpandMore />
-        </div>
-        <ul></ul>
-      </div>
     </StyledSideBar>
   );
 }
