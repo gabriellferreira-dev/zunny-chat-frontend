@@ -6,60 +6,41 @@ import { Form } from '../styled-components/Form';
 import BgImage from '../assets/images/bg2.jpg';
 import { Spinner } from '../styled-components/Spinner';
 import { Page } from '../styled-pages/Page';
+import { useDispatch, useSelector } from 'react-redux';
+import { userRegister } from '../store/Thunks';
 
 export default function Register() {
   const [user, setUser] = useState({});
   const [error, setError] = useState('');
   const [buttonName, setButtonName] = useState('Cadastrar');
-  const [registerStatus, setRegisterStatus] = useState('');
   const [redirectTime, setRedirectTime] = useState(3);
+
+  const dispatch = useDispatch();
+
+  const userState = useSelector((state) => state.User);
+
+  console.log(userState);
 
   useEffect(() => {
     if (!redirectTime) return false;
     const TIME = 1000;
     const interval = setInterval(() => {
-      if (registerStatus === 'success') {
+      if (userState.registerStatus === 'registered') {
         setRedirectTime(redirectTime - 1);
       }
     }, TIME);
     return () => clearInterval(interval);
-  }, [redirectTime, registerStatus]);
+  }, [redirectTime, userState.registerStatus]);
 
   const emailRef = useRef();
   const passRef = useRef();
   const repeatPassRef = useRef();
   const formRef = useRef();
 
-  const setStatus = (status, options) => {
-    const timeOut = Math.floor(Math.random() * (5000 - 1000 + 1) + 1000);
-
-    setTimeout(() => {
-      setRegisterStatus(status);
-
-      if (options?.error) {
-        emailRef.current.classList.add('error');
-        setError(options.error);
-      } else {
-        formRef.current.reset();
-      }
-    }, timeOut);
-  };
-
-  const createUser = async () => {
-    const response = await fetch('http://localhost:3001/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(user),
-    });
-
-    const created = await response.json();
-
-    if (!response.ok) {
-      setStatus('', { error: created.message });
-    }
-
-    if (response.ok) {
-      setStatus('success');
+  const setErrorMessage = (err) => {
+    if (err) {
+      emailRef.current.classList.add('error');
+      setError(err);
     }
   };
 
@@ -91,17 +72,23 @@ export default function Register() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const { repassword, ...rest } = user;
+
     if (!error) {
-      setRegisterStatus('registering');
-      createUser();
+      dispatch(userRegister(rest));
     }
   };
 
   useEffect(() => {
-    if (registerStatus === 'success') {
+    if (userState.registerStatus === 'registered') {
       setButtonName(`Indo para login em ${redirectTime}.`);
     }
-  }, [redirectTime, registerStatus]);
+  }, [redirectTime, userState.registerStatus]);
+
+  useEffect(() => {
+    setErrorMessage(userState?.error);
+  }, [userState?.error]);
 
   if (!redirectTime) return <Redirect to='/login' />;
 
@@ -113,7 +100,7 @@ export default function Register() {
         ref={formRef}
         onSubmit={handleSubmit}
         register
-        status={registerStatus}
+        status={userState.registerStatus}
       >
         <input
           type='text'
@@ -159,7 +146,11 @@ export default function Register() {
         />
         <span>{error}</span>
         <button type='submit'>
-          {registerStatus === 'registering' ? <Spinner /> : buttonName}
+          {userState.registerStatus === 'registering' ? (
+            <Spinner />
+          ) : (
+            buttonName
+          )}
         </button>
         <p>
           Já possuo cadastro. <Link to='/login'>Login.</Link>

@@ -1,49 +1,30 @@
 import { Link, Redirect } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Background } from '../styled-components/Background';
 import Logo from '../assets/images/logo.png';
 import { Form } from '../styled-components/Form';
 import BgImage from '../assets/images/bg1.jpg';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Spinner } from '../styled-components/Spinner';
 import { Page } from '../styled-pages/Page';
+import { userLogin } from '../store/Thunks';
 
 export default function Login() {
   const [user, setUser] = useState({});
   const [error, setError] = useState('');
-  const [loginStatus, setLoginStatus] = useState('');
+
+  const userState = useSelector((state) => state.User);
+
+  const dispatch = useDispatch();
 
   const emailRef = useRef();
   const passRef = useRef();
 
-  const setStatus = (status, options) => {
-    const timeOut = Math.floor(Math.random() * (5000 - 1000 + 1) + 1000);
-
-    setTimeout(() => {
-      setLoginStatus(status);
-
-      if (options?.error.match(/senha/i)) {
-        passRef.current.classList.add('error');
-      }
-      setError(options?.error);
-    }, timeOut);
-  };
-
-  const getUser = async () => {
-    const response = await fetch('http://localhost:3001/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(user),
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      setStatus('', { error: data.error });
+  const setErrorMessage = (err) => {
+    if (err && err.match(/senha/i)) {
+      passRef.current.classList.add('error');
     }
-
-    if (response.ok) {
-      setStatus('success');
-    }
+    setError(err);
   };
 
   const handleChange = ({ target: { name, value } }) => {
@@ -61,19 +42,22 @@ export default function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!error) {
-      setLoginStatus('signin');
-      getUser();
-    }
+    dispatch(userLogin(user));
   };
 
-  if (loginStatus === 'success') return <Redirect to='/' />;
+  console.log(userState)
+
+  useEffect(() => {
+    setErrorMessage(userState?.error);
+  }, [userState?.error]);
+
+  if (userState.loginStatus === 'logged') return <Redirect to='/' />;
 
   return (
     <Page login>
       <Background login bg={BgImage} />
       <img src={Logo} alt='Zunny logo' />
-      <Form onSubmit={handleSubmit} status={loginStatus} login>
+      <Form onSubmit={handleSubmit} status={userState.loginStatus} login>
         <input
           type='email'
           name='email'
@@ -92,7 +76,7 @@ export default function Login() {
         />
         {error && <span>{error}</span>}
         <button type='submit'>
-          {loginStatus === 'signin' ? <Spinner /> : 'Entrar'}
+          {userState.loginStatus === 'signin-in' ? <Spinner /> : 'Entrar'}
         </button>
         <p>
           Não possuo cadastro. <Link to='/register'>Cadastrar.</Link>
