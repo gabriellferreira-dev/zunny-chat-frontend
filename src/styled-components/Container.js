@@ -13,6 +13,6 @@ export const Container = styled.div`
           rgba(240, 240, 240, 0.8)
         ),
         url(${wallpaper});
-        background-size: contain;
+        background-size: 400px;
     `}
 `;

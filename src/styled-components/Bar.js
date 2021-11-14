@@ -7,6 +7,8 @@ const Bar = styled.div`
   background: #f0f0f0;
   padding: 10px;
   z-index: 20;
+  display: flex;
+  align-items: center;
 
   ${({ top }) =>
     top &&

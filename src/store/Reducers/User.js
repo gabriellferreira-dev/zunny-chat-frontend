@@ -19,7 +19,7 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         loginStatus: 'logged',
-        user: action.payload,
+        user: action.payload.user,
       };
     case USER_REGISTER_REQUEST:
       delete state.error;

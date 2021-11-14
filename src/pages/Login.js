@@ -9,7 +9,7 @@ import { Spinner } from '../styled-components/Spinner';
 import { Page } from '../styled-pages/Page';
 import { userLogin } from '../store/Thunks';
 
-export default function Login() {
+export default function Login({ socket }) {
   const [user, setUser] = useState({});
   const [error, setError] = useState('');
 
@@ -45,11 +45,13 @@ export default function Login() {
     dispatch(userLogin(user));
   };
 
-  console.log(userState)
-
   useEffect(() => {
     setErrorMessage(userState?.error);
   }, [userState?.error]);
+
+  useEffect(() => {
+    socket.emit('login', userState.user);
+  }, [socket, userState.user]);
 
   if (userState.loginStatus === 'logged') return <Redirect to='/' />;
 
