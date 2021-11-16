@@ -5,9 +5,9 @@ import { UserStatusElipse } from '../styled-components/UserStatusElipse';
 export default function OnlineUsers({ socket }) {
   const [onlineUsers, setOnlineUsers] = useState([]);
 
-  socket.on('onlineUsers', (users) => setOnlineUsers(users));
-
-  console.log(onlineUsers);
+  useEffect(() => {
+    socket.on('onlineUsers', (users) => setOnlineUsers(users));
+  }, [socket]);
 
   return (
     <TopBar top>

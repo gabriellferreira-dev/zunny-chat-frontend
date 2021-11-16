@@ -12,8 +12,8 @@ export default function Home({ socket }) {
       <SideBar />
       <Content>
         <OnlineUsers socket={socket} />
-        <MessagesContainer />
-        <MessageForm />
+        <MessagesContainer socket={socket} />
+        <MessageForm socket={socket} />
       </Content>
     </Page>
   );

@@ -19,8 +19,6 @@ export default function Register() {
 
   const userState = useSelector((state) => state.User);
 
-  console.log(userState);
-
   useEffect(() => {
     if (!redirectTime) return false;
     const TIME = 1000;

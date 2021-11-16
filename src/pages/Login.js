@@ -50,8 +50,10 @@ export default function Login({ socket }) {
   }, [userState?.error]);
 
   useEffect(() => {
-    socket.emit('login', userState.user);
-  }, [socket, userState.user]);
+    if (userState.loginStatus === 'logged') {
+      socket.emit('login', userState.user);
+    }
+  }, [socket, userState.loginStatus, userState.user]);
 
   if (userState.loginStatus === 'logged') return <Redirect to='/' />;
 
